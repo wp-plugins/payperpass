@@ -8,7 +8,6 @@ License: GNU
 License URI: http://www.gnu.org/licenses/licenses.fr.html
 
 Monétisez votre site avec la solution de micropaiement payperpass. Simple, sécurisé et gratuit, sans connaissances techniques particulières.
-Votre client est débité sur sa facture téléphonique.
 
 == Description ==
 
@@ -19,6 +18,8 @@ Ensuite, créez vos shortcodes facilement grâce à la fenêtre *Payperpass* dan
 
 Le shortcode s'ajoutera automatiquement à votre texte :
 > [payperpass idProduit=1 idService=1]
+
+Votre client est débité sur sa facture téléphonique.
 
 == Installation ==
 
@@ -50,9 +51,9 @@ Nul besoin d’être un expert en informatique pour installer le script de paiem
 Après inscription, il vous suffit de télécharger ce dernier dans votre espace client Payperpass et de l’installer.
 Un suivi conseil peut être fourni si besoin est.
 
-= J'ai un message d'erreur lors de la =
+= J'ai un message d'erreur lors de l'ouverture de la fenêtre de création du shortcode =
 
-Vérifiez que votre API KEY a bien été enregistrée dans les paramètres de Payperpass.
+Vérifiez que votre API KEY ait bien été enregistrée dans les paramètres de Payperpass.
 
 == Screenshots ==
 

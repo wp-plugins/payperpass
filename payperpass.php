@@ -1,12 +1,12 @@
 <?php
 /*
-Plugin Name: Payperpass plugin
-Description: Gestion de vos iframes produit via shortcode
+Plugin Name: Payperpass
+Description: Monétisez votre site avec la solution de micropaiement payperpass. Simple, sécurisé et gratuit, sans connaissances techniques particulières.
 Version: 0.1
 License: GNU
 License URI: http://www.gnu.org/licenses/licenses.fr.html
-Author: Pierre FAYOL
-Author URI: http://pierre-fayol.fr
+Author: payperpass
+Author URI: http://payperpass.eu
 Plugin URI: http://payperpass.eu/plugins-payperpass-pour-wordpress/
 */
 
