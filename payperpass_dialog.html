@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700,800' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="./assets/bootstrap/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="./assets/bootstrap/css/bootstrap-theme.min.css" />
+    <style>
+        body{
+            margin: 0;
+            font-family: 'Open Sans', sans-serif;
+        }
+        h1{
+            margin: 0 !important;
+            font-size: 25px!important;
+        }
+        form{
+            margin: 10px;
+        }
+        #header {
+            min-height: 55px;
+            background: rgb(109,47,139);
+            background: -moz-linear-gradient(top, rgba(67,29,86,1) 0%, rgba(79,17,109,1) 100%);
+            background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(67,29,86,1)), color-stop(100%,rgba(79,17,109,1)));
+            background: -webkit-linear-gradient(top, rgba(67,29,86,1) 0%,rgba(79,17,109,1) 100%);
+            background: -o-linear-gradient(top, rgba(67,29,86,1) 0%,rgba(79,17,109,1) 100%);
+            background: -ms-linear-gradient(top, rgba(67,29,86,1) 0%,rgba(79,17,109,1) 100%);
+            background: linear-gradient(to bottom, rgba(67,29,86,1) 0%,rgba(79,17,109,1) 100%);
+            filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#431d56', endColorstr='#4f116d',GradientType=0 );
+            margin: 0 auto;
+            float: none;
+            text-align: center;
+        }
+        #loader {
+            position:   fixed;
+            z-index:    1000;
+            top:        0;
+            left:       0;
+            height:     100%;
+            width:      100%;
+            background: rgba( 255, 255, 255, .8 ) url('assets/images/loader.gif') 50% 50% no-repeat;
+        }
+        select[multiple]{
+            width: 100%;
+            height: 200px;
+        }
+        #error{
+            padding: 0 5%;
+        }
+        #error p{
+            margin: 0;
+            padding: 1em;
+        }
+    </style>
+</head>
+<body>
+<div id="loader"></div>
+<div id="error" class="bg-danger">
+    <p id="service" style="display: none;">
+        Veuillez choisir au moins un service avec votre produit.
+        <button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    </p>
+    <p id="produit" style="display: none;">
+        Veuillez choisir un produit dans la liste.
+        <button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    </p>
+    <p id="api" style="display: none;">
+        Une erreur est survenue. Veuillez rééssayer.
+        <br/>
+        Si l'erreur persiste, veuillez contacter <a id="ppp_contact" href="mailto:support@payperpass.eu">Payperpass</a>
+        <button type="button" class="close" aria-label="Close" style="position: relative;top: -10px;"><span aria-hidden="true">&times;</span></button>
+    </p>
+    <p id="ppp_error" style="display: none;">
+        <button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    </p>
+</div>
+<div id="header">
+    <img src="./assets/images/logo-big.png" alt="Logo Payperpass" style="width: 70%;"/>
+</div>
+<form>
+    <div class="panel-group accordion-container">
+        <div id="products" class="panel panel-default accordion-section open">
+            <div class="panel-heading accordion-section-title">
+                <h1 class="panel-title"><a href="#">Mes produits :</a></h1>
+            </div>
+            <div class="panel-collapse accordion-section-content">
+                <div class="panel-body">
+                    <select name="product" id="productSelect" required="required" class="form-control">
+                        <option value="" disabled>Choisir un produit</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div id="services" class="panel panel-default accordion-section">
+            <div class="panel-heading accordion-section-title">
+                <h1 class="panel-title"><a href="#">Services associés :</a></h1>
+            </div>
+            <div class="panel-collapse accordion-section-content" style="display: none;">
+                <div class="panel-body">
+                    <p id="notProduct">Vous n'avez pas selectionné votre produit.</p>
+                    <span class="help-block">Choisissez un ou plusieurs services en maintenant le touche <kbd>ctrl</kbd> ou <kbd>&#x2318</kbd></span>
+                </div>
+            </div>
+        </div>
+        <div id="themes" class="panel panel-default accordion-section">
+            <div class="panel-heading accordion-section-title">
+                <h4 class="panel-title"><a href="#">Thème de votre iframe (optionnel):</a></h4>
+            </div>
+            <div class="panel-collapse accordion-section-content" style="display: none;">
+                <div class="panel-body">
+                    <span class="help-block">Le theme par défault est le thème <mark>Light</mark></span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <input type='submit' value='Ajouter un iframe' id="submit" class="btn btn-primary btn-block" style="margin-top: 10px;"/>
+</form>
+<script type='text/javascript'>
+    (function() {
+        //	Get the args... Most of the time, we can use TinyMCE's top
+        //	but sometimes it errors out.  When it does, try parent instead.
+        try {
+            var args = top.tinymce.activeEditor.windowManager.getParams();
+        } catch (e) {
+            console.log("Payperpass :: Error getting parameters passed to dialog with 'var args = top.tinymce.activeEditor.windowManager.getParams();'.  Trying parent instead of top.");
+            try {
+                var args = parent.tinymce.activeEditor.windowManager.getParams();
+                console.log("Payperpass :: Successfully obtained parameters using 'var args = parent.tinymce.activeEditor.windowManager.getParams();'.");
+            }
+            catch (e) {
+                console.log("Payperpass :: Error getting parameters passed to dialog with 'var args = parent.tinymce.activeEditor.windowManager.getParams();'.  Dialog cannot function without this data.");
+            }
+        }
+
+        //	Get jQuery
+        //	http://jtmorris.net/?p=1109 for more info
+        var $ = args['jquery'];
+        var editor = args['editor'];
+        var shortcode = args['shortcode'];
+
+
+        //	Get the context for jQuery
+        //	http://jtmorris.net/?p=1109 for more info
+        var context = document.getElementsByTagName("body")[0];
+
+        //	Get passed arguments
+        var apikey = args['apikey'];
+
+        var select = {
+            'product': $('#productSelect', context)
+        };
+        var div = {
+            'product': $('#products .panel-body', context),
+            'product-panel-collapse': $('#products .panel-collapse', context),
+            'service': $('#services .panel-body', context),
+            'service-panel-collapse': $('#services .panel-collapse', context),
+            'themes': $('#themes .panel-body', context),
+            'themes-panel-collapse': $('#themes .panel-collapse', context),
+            'notProduct': $('#services .panel-collapse p#notProduct', context),
+            'error': $('#error', context),
+            'ppp_error': $('#error #ppp_error', context)
+        };
+        var input = {
+            'submit': $('#submit', context),
+            'radio':$( "#themes .panel-body", context )
+        };
+
+        var form = $('form', context);
+
+        var loader = $('#loader', context);
+
+        if(shortcode != 'payperpass'){
+            $('#themes', context).hide();
+        }
+
+        $.getJSON( 'http://client.payperpass.eu/api.ashx?method=getProduct&apikey=' + apikey)
+                .done(function(data) {
+                    if(data.status == 200) {
+                        $.each(data.Produits, function (i, item) {
+                            select['product'].append($("<option>").attr("value", item.idProduit).append(item.nom));
+                            div['service'].append($("<select>").attr({
+                                "id": "servicesSelect" + item.idProduit,
+                                "multiple": "",
+                                "class": "form-control"
+                            }).hide());
+
+                            select["servicesSelect" + item.idProduit] = $('#servicesSelect' + item.idProduit, context);
+
+                            $.each(item.services, function (s, service) {
+                                select["servicesSelect" + item.idProduit].append($("<option>").attr("value", service.idService).append(service.nom));
+                            })
+                        });
+                        $.each(data.Theme, function (i, theme) {
+                            $('<label class="radio-inline text-capitalize"><input type="radio" id="inlineRadio' + i + '" name="inlineRadioOptions" value="' + theme + '"  />' + theme + '</label>').appendTo(div['themes']);
+                        });
+                    }else{
+                        form.hide();
+                        div["ppp_error"].append(data.erreur).show();
+                    }
+                })
+                .fail(function(jqxhr, textStatus, error) {
+                    var err = textStatus + ", " + error;
+                    $(div['error']).find('p#api').show();
+                    form.hide();
+                })
+                .always(function() {
+                    loader.hide();
+                });
+
+        var idProduit = 0;
+        var selectServiceSelected = '';
+        select['product'].change(function(){
+            idProduit = select['product'].val();
+            if(selectServiceSelected != '' && selectServiceSelected != "servicesSelect" + idProduit){
+                $("#"+selectServiceSelected, context).hide();
+            }
+            selectServiceSelected = "servicesSelect" + idProduit;
+            select["servicesSelect" + idProduit].attr("required","required").show();
+            div['notProduct'].hide();
+        });
+
+        //	Insert the shortcode when submitted
+        form.submit(function(event) {
+            var idService = '';
+            var theme = $(input['radio']).find('input:checked').val();
+            var error = false;
+            event.preventDefault();
+
+            if(idProduit == 0 || idProduit == null ){
+                $(div['error']).find('p#produit').show();
+                error = true;
+            }
+
+            if(selectServiceSelected == '' || selectServiceSelected == null ){
+                $(div['error']).find('p#service').show();
+                error = true;
+            }
+
+            if(error){
+                $(div['error']).find('p#service').delay(5000).hide().animate({height: "0"}, 500);
+                $(div['error']).find('p#produit').delay(5000).hide().animate({height: "0"}, 500);
+                return;
+            }
+
+
+            $( "select#" + selectServiceSelected + " option:selected", context ).each(function() {
+                idService += '-'+$( this ).val();
+            });
+
+            if(theme != '' && theme != null && theme != undefined){
+                theme = 'theme='+theme;
+            }else{
+                theme = '';
+            }
+
+            // Suppression du premier tiret
+            idService = idService.substring(1, idService.length);
+
+            if(error == false) {
+                var content = '[' + shortcode + ' idProduit=' + idProduit + ' idService=' + idService + (theme == '' ? '' : ' ' + theme) + ']';
+                if (editor.selection.getContent() == null || editor.selection.getContent() == '') {
+                    editor.selection.setContent(content);
+                } else {
+                    editor.selection.setContent(content + editor.selection.getContent() + '[/' + shortcode + ']');
+                }
+                editor.windowManager.close();
+            }
+        });
+
+        $('button.close', context).click(function(){
+            $('#error', context).hide();
+            $('p#service', context).hide();
+        })
+
+
+
+        /**
+         *  Accordion animation from wp-admin/js/accordion.js
+         */
+        $( context ).ready( function () {
+            // Expand/Collapse accordion sections on click.
+            $( '.accordion-container', context ).on( 'click keydown', '.accordion-section-title', function( e ) {
+                if ( e.type === 'keydown' && 13 !== e.which ) { // "return" key
+                    return;
+                }
+
+                e.preventDefault(); // Keep this AFTER the key filter above
+
+                accordionSwitch( $( this ) );
+            });
+        });
+
+        /**
+         * Close the current accordion section and open a new one.
+         *
+         * @param {Object} el Title element of the accordion section to toggle.
+         * @since 3.6.0
+         */
+        function accordionSwitch ( el ) {
+            var section = el.closest( '.accordion-section', context ),
+                    siblings = section.closest( '.accordion-container', context ).find( '.open', context ),
+                    content = section.find( '.accordion-section-content', context );
+
+            // This section has no content and cannot be expanded.
+            if ( section.hasClass( 'cannot-expand' ) ) {
+                return;
+            }
+
+            if ( section.hasClass( 'open' ) ) {
+                section.toggleClass( 'open' );
+                content.toggle( true ).slideToggle( 150 );
+            } else {
+                siblings.removeClass( 'open' );
+                siblings.find( '.accordion-section-content' ).show().slideUp( 150 );
+                content.toggle( false ).slideToggle( 150 );
+                section.toggleClass( 'open' );
+            }
+        }
+
+    }());
+
+</script>
+</body>
+</html>
+
+
