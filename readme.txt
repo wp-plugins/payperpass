@@ -33,6 +33,7 @@ Vous êtes déjà client chez *Payperpass*,
 1. Invitez vos clients à payer pour ce produit
 
 Vous n'êtes pas encore client,
+
 1. Créez votre compte sur [Payperpass](http://client.payperpass.eu/inscription.aspx)
 1. [Ajoutez votre site](http://client.payperpass.eu/espaceClient/sites.aspx)
 1. [Ajouter les produits](http://client.payperpass.eu/espaceClient/produits.aspx) que vous souhaitez monétiser
