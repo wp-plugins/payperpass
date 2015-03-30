@@ -7,7 +7,7 @@ Stable tag: 4.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Monétisez votre site avec la solution de micropaiement payperpass. Simple, sécurisé et gratuit, sans connaissances techniques particulières.
+Monétisez votre site avec la solution de micropaiement Payperpass. Simple, sécurisé et gratuit, sans connaissances techniques particulières.
 
 == Description ==
 
