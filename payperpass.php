@@ -41,6 +41,7 @@ class Payperpass_Plugin{
             <?php do_settings_sections('payperpass_settings') ?>
             <?php submit_button(); ?>
         </form>
+        Plus d'informations sur <a href="http://www.payperpass.eu/plugins-payperpass-pour-wordpress/">la page du Plugin</a>.
     <?php
     }
 

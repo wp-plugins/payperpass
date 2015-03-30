@@ -21,6 +21,8 @@ Le shortcode suivant s'ajoutera automatiquement à votre texte :
 
 Votre client est débité sur sa facture téléphonique.
 
+Plus d'informations sur [la page Payperpass](http://www.payperpass.eu/plugins-payperpass-pour-wordpress/)
+
 == Installation ==
 
 Vous êtes déjà client chez *Payperpass*,
@@ -36,13 +38,15 @@ Vous n'êtes pas encore client,
 
 1. Créez votre compte sur [Payperpass](http://client.payperpass.eu/inscription.aspx)
 1. [Ajoutez votre site](http://client.payperpass.eu/espaceClient/sites.aspx)
-1. [Ajouter les produits](http://client.payperpass.eu/espaceClient/produits.aspx) que vous souhaitez monétiser
+1. [Ajoutez les produits](http://client.payperpass.eu/espaceClient/produits.aspx) que vous souhaitez monétiser
 1. Générez votre API key dans votre [Espace Client](http://client.payperpass.eu/espaceClient/ficheclient.aspx)
 1. Ajoutez l'extension à votre site
 1. Activez le plugin
 1. Copiez votre API key dans les paramètres de l'extension
 1. Saisisez vos shortcodes dans vos pages.
 1. Invitez vos clients à payer pour ce produit
+
+Plus d'informations sur [la page Payperpass](http://www.payperpass.eu/plugins-payperpass-pour-wordpress/)
 
 == Frequently Asked Questions ==
 
